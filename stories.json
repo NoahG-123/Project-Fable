@@ -1,0 +1,877 @@
+[
+  {
+    "title": "The Golden Goose",
+    "author": "Brothers Grimm",
+    "moral": "Kindness is rewarded in unexpected ways",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Boy Who Could Not Shiver",
+    "author": "Brothers Grimm",
+    "moral": "Fear cannot be learned, only met",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Crow and the Pitcher",
+    "author": "Aesop",
+    "moral": "Necessity is the mother of invention",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Six Swans",
+    "author": "Brothers Grimm",
+    "moral": "Quiet perseverance can undo the darkest curse",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "Mother Holle",
+    "author": "Brothers Grimm",
+    "moral": "Diligence is rewarded and laziness repaid in kind",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Belling the Cat",
+    "author": "Aesop",
+    "moral": "It is one thing to propose, another to carry it out",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Valiant Little Tailor",
+    "author": "Brothers Grimm",
+    "moral": "Confidence can carry you further than strength",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Three Army Surgeons",
+    "author": "Brothers Grimm",
+    "moral": "Pride in your own skill can blind you to the obvious",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The North Wind and the Sun",
+    "author": "Aesop",
+    "moral": "Gentle persuasion succeeds where force fails",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Girl Without Hands",
+    "author": "Brothers Grimm",
+    "moral": "Patience and goodness outlast cruelty",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Three Snake Leaves",
+    "author": "Brothers Grimm",
+    "moral": "Loyalty deserves loyalty in return",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Fox and the Crane",
+    "author": "Aesop",
+    "moral": "One bad turn deserves another",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "Fitcher's Bird",
+    "author": "Brothers Grimm",
+    "moral": "Cleverness can defeat the most practiced evil",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Robber Bridegroom",
+    "author": "Brothers Grimm",
+    "moral": "Trust your instincts when something feels wrong",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Stag at the Pool",
+    "author": "Aesop",
+    "moral": "We often despise what is most useful to us",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Devil With the Three Golden Hairs",
+    "author": "Brothers Grimm",
+    "moral": "What is fated will find its way",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Ass in the Lion's Skin",
+    "author": "Aesop",
+    "moral": "Fine clothes may disguise, but words reveal a fool",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Wild Swans",
+    "author": "Hans Christian Andersen",
+    "moral": "Silent devotion can break any spell",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Bremen Town Musicians",
+    "author": "Brothers Grimm",
+    "moral": "Those written off can still find a new life together",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Tortoise and the Hare",
+    "author": "Aesop",
+    "moral": "Slow and steady wins the race",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Snow Queen",
+    "author": "Hans Christian Andersen",
+    "moral": "A loving heart is stronger than the coldest reason",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "Rumpelstiltskin",
+    "author": "Brothers Grimm",
+    "moral": "A careless promise can cost you dearly",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Boy Who Cried Wolf",
+    "author": "Aesop",
+    "moral": "Liars are not believed even when they tell the truth",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Steadfast Tin Soldier",
+    "author": "Hans Christian Andersen",
+    "moral": "Constancy holds even when the world does not",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Frog King",
+    "author": "Brothers Grimm",
+    "moral": "Keeping a promise matters more than liking it",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Fox and the Grapes",
+    "author": "Aesop",
+    "moral": "It is easy to despise what you cannot have",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Shadow",
+    "author": "Hans Christian Andersen",
+    "moral": "Give your worst self an inch and it will take your place",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "Hansel and Gretel",
+    "author": "Brothers Grimm",
+    "moral": "Wits and courage can outmatch wickedness",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Ant and the Grasshopper",
+    "author": "Aesop",
+    "moral": "Prepare today for the needs of tomorrow",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Little Match Girl",
+    "author": "Hans Christian Andersen",
+    "moral": "The world often fails its gentlest souls",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Rapunzel",
+    "author": "Brothers Grimm",
+    "moral": "Love finds a way past every wall",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Lion and the Mouse",
+    "author": "Aesop",
+    "moral": "No act of kindness is ever wasted",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Bell",
+    "author": "Hans Christian Andersen",
+    "moral": "The truest wonders are found by those who keep seeking",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Twelve Dancing Princesses",
+    "author": "Brothers Grimm",
+    "moral": "Every secret leaves a trail",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Dog and Its Reflection",
+    "author": "Aesop",
+    "moral": "Grasp at the shadow and you lose the substance",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Bog King's Daughter",
+    "author": "Hans Christian Andersen",
+    "moral": "Love redeems even a divided nature",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Fisherman and His Wife",
+    "author": "Brothers Grimm",
+    "moral": "Endless wanting leaves you with nothing",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Goose That Laid the Golden Eggs",
+    "author": "Aesop",
+    "moral": "Greed destroys the source of all good",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Ugly Duckling",
+    "author": "Hans Christian Andersen",
+    "moral": "You may simply be a swan among ducks",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Juniper Tree",
+    "author": "Brothers Grimm",
+    "moral": "Wrongdoing cannot stay buried forever",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Town Mouse and the Country Mouse",
+    "author": "Aesop",
+    "moral": "A simple life in peace beats luxury lived in fear",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Emperor's New Clothes",
+    "author": "Hans Christian Andersen",
+    "moral": "No title can survive a child telling the truth",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Brother and Sister",
+    "author": "Brothers Grimm",
+    "moral": "Devotion between siblings survives every trial",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Wolf in Sheep's Clothing",
+    "author": "Aesop",
+    "moral": "Appearances are deceptive",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "Thumbelina",
+    "author": "Hans Christian Andersen",
+    "moral": "Belonging finds you when you stay true to yourself",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "King Thrushbeard",
+    "author": "Brothers Grimm",
+    "moral": "Pride must sometimes be humbled to find happiness",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Oak and the Reeds",
+    "author": "Aesop",
+    "moral": "It is better to bend than to break",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Little Mermaid",
+    "author": "Hans Christian Andersen",
+    "moral": "Some loves cost more than they return",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Seven Ravens",
+    "author": "Brothers Grimm",
+    "moral": "Determination can undo even a careless curse",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Milkmaid and Her Pail",
+    "author": "Aesop",
+    "moral": "Do not count your chickens before they are hatched",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Princess and the Pea",
+    "author": "Hans Christian Andersen",
+    "moral": "True nature shows itself in the smallest things",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Jorinda and Joringel",
+    "author": "Brothers Grimm",
+    "moral": "Steadfast love breaks enchantment",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Fox and the Crow",
+    "author": "Aesop",
+    "moral": "Beware of flatterers",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Nightingale",
+    "author": "Hans Christian Andersen",
+    "moral": "The real thing is worth more than the finest imitation",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Water of Life",
+    "author": "Brothers Grimm",
+    "moral": "The kind-hearted succeed where the proud fail",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Frogs Who Desired a King",
+    "author": "Aesop",
+    "moral": "Be careful what you wish for",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Tinderbox",
+    "author": "Hans Christian Andersen",
+    "moral": "Fortune favours the audacious",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Queen Bee",
+    "author": "Brothers Grimm",
+    "moral": "Compassion for small creatures brings great help",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Dog in the Manger",
+    "author": "Aesop",
+    "moral": "People often begrudge others what they cannot enjoy themselves",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Swineherd",
+    "author": "Hans Christian Andersen",
+    "moral": "Those who prize trinkets over sincerity lose both",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Golden Bird",
+    "author": "Brothers Grimm",
+    "moral": "Ignoring good advice costs you twice",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Two Pots",
+    "author": "Aesop",
+    "moral": "Equals make the safest company",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Flying Trunk",
+    "author": "Hans Christian Andersen",
+    "moral": "Charm without substance eventually burns up",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Faithful John",
+    "author": "Brothers Grimm",
+    "moral": "True loyalty bears any burden",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Bundle of Sticks",
+    "author": "Aesop",
+    "moral": "Union gives strength",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Fir Tree",
+    "author": "Hans Christian Andersen",
+    "moral": "Longing for tomorrow wastes the only day you have",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Wolf and the Seven Young Kids",
+    "author": "Brothers Grimm",
+    "moral": "Do not open the door to smooth talkers",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Old Lion and the Fox",
+    "author": "Aesop",
+    "moral": "Learn from the misfortunes of others",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "Little Ida's Flowers",
+    "author": "Hans Christian Andersen",
+    "moral": "Imagination sees what grown-ups have forgotten",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Elves and the Shoemaker",
+    "author": "Brothers Grimm",
+    "moral": "Generosity repays generosity",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Monkey and the Dolphin",
+    "author": "Aesop",
+    "moral": "Those who pretend to be what they are not get found out",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Red Shoes",
+    "author": "Hans Christian Andersen",
+    "moral": "Vanity can carry you where you never meant to go",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Star Money",
+    "author": "Brothers Grimm",
+    "moral": "Give freely and good returns to you",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Cat and the Old Rat",
+    "author": "Aesop",
+    "moral": "The wise do not let themselves be fooled twice",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Snowman",
+    "author": "Hans Christian Andersen",
+    "moral": "We long for what we do not understand",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Snow-White and Rose-Red",
+    "author": "Brothers Grimm",
+    "moral": "Kindness given without suspicion is repaid in full",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Eagle and the Jackdaw",
+    "author": "Aesop",
+    "moral": "Do not overestimate your own powers",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Darning Needle",
+    "author": "Hans Christian Andersen",
+    "moral": "Self-importance ends in the gutter",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Goose Girl",
+    "author": "Brothers Grimm",
+    "moral": "Truth rises no matter who tries to bury it",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Hares and the Frogs",
+    "author": "Aesop",
+    "moral": "There is always someone worse off than you",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "Five Peas from a Pod",
+    "author": "Hans Christian Andersen",
+    "moral": "Even the smallest thing can be someone's whole hope",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Iron Hans",
+    "author": "Brothers Grimm",
+    "moral": "What you are given in trust shapes what you become",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Honest Woodcutter",
+    "author": "Aesop",
+    "moral": "Honesty is the best policy",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Silver Shilling",
+    "author": "Hans Christian Andersen",
+    "moral": "Worth is not decided by those who misjudge you",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Blue Light",
+    "author": "Brothers Grimm",
+    "moral": "Never discard those who have served you well",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Wolf and the Crane",
+    "author": "Aesop",
+    "moral": "Expect no reward for serving the wicked",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Galoshes of Fortune",
+    "author": "Hans Christian Andersen",
+    "moral": "Wishes granted are rarely wishes understood",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "Bearskin",
+    "author": "Brothers Grimm",
+    "moral": "Character outlasts appearance",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Peacock and the Crane",
+    "author": "Aesop",
+    "moral": "Fine feathers do not make fine birds",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Traveling Companion",
+    "author": "Hans Christian Andersen",
+    "moral": "Goodness given freely returns when you need it most",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Turnip",
+    "author": "Brothers Grimm",
+    "moral": "Envy digs its own hole",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Farmer and the Viper",
+    "author": "Aesop",
+    "moral": "Kindness shown to the wicked is wasted",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "Ole Lukoje",
+    "author": "Hans Christian Andersen",
+    "moral": "Every night tells a different story to those who dream",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Four Skillful Brothers",
+    "author": "Brothers Grimm",
+    "moral": "Every skill matters when they work together",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Gnat and the Bull",
+    "author": "Aesop",
+    "moral": "The smaller the mind, the greater the conceit",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Storks",
+    "author": "Hans Christian Andersen",
+    "moral": "Mockery has a way of coming home to roost",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "One-Eye, Two-Eyes, and Three-Eyes",
+    "author": "Brothers Grimm",
+    "moral": "Being ordinary is no reason to be treated as less",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Fisherman and the Little Fish",
+    "author": "Aesop",
+    "moral": "A small gain now is worth more than a promise of more",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Buckwheat",
+    "author": "Hans Christian Andersen",
+    "moral": "Pride that will not bend is broken instead",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Poor Miller's Boy and the Cat",
+    "author": "Brothers Grimm",
+    "moral": "Faithful service in small things earns great reward",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Crab and Its Mother",
+    "author": "Aesop",
+    "moral": "Lead by example, not by words",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Old House",
+    "author": "Hans Christian Andersen",
+    "moral": "Memory keeps alive what time takes away",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Spirit in the Bottle",
+    "author": "Brothers Grimm",
+    "moral": "Think before you set loose what you cannot control",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Astrologer Who Fell Into a Well",
+    "author": "Aesop",
+    "moral": "Mind what is at your feet before gazing at the stars",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Happy Family",
+    "author": "Hans Christian Andersen",
+    "moral": "Contentment needs very little to be complete",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Godfather Death",
+    "author": "Brothers Grimm",
+    "moral": "No one cheats death twice",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Trumpeter Taken Prisoner",
+    "author": "Aesop",
+    "moral": "Inciting others to wrong is as bad as doing the wrong",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Collar",
+    "author": "Hans Christian Andersen",
+    "moral": "A boaster's history grows with every telling",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Twelve Huntsmen",
+    "author": "Brothers Grimm",
+    "moral": "True love recognises what disguise conceals",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Miser and His Gold",
+    "author": "Aesop",
+    "moral": "Wealth unused might as well not exist",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "It's Quite True!",
+    "author": "Hans Christian Andersen",
+    "moral": "A rumour grows a feather into five hens",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The King of the Golden Mountain",
+    "author": "Brothers Grimm",
+    "moral": "Betrayal returns to the betrayer",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Fir Tree and the Bramble",
+    "author": "Aesop",
+    "moral": "A humble life in safety beats grandeur lived in peril",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Teapot",
+    "author": "Hans Christian Andersen",
+    "moral": "Losing your polish can reveal your purpose",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Raven",
+    "author": "Brothers Grimm",
+    "moral": "Persistence succeeds where haste fails",
+    "estimated_length": "long",
+    "status": "pending"
+  },
+  {
+    "title": "The Kid and the Wolf",
+    "author": "Aesop",
+    "moral": "It is easy to be brave from a safe distance",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Butterfly",
+    "author": "Hans Christian Andersen",
+    "moral": "Endless choosing leaves you with nothing chosen",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Hans in Luck",
+    "author": "Brothers Grimm",
+    "moral": "Contentment is worth more than possessions",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Travelers and the Bear",
+    "author": "Aesop",
+    "moral": "Misfortune tests the sincerity of friends",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Dung Beetle",
+    "author": "Hans Christian Andersen",
+    "moral": "Self-regard survives any amount of evidence",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Mouse, the Bird, and the Sausage",
+    "author": "Brothers Grimm",
+    "moral": "Envy of another's role can ruin what works",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Horse and the Stag",
+    "author": "Aesop",
+    "moral": "Freedom is too high a price to pay for revenge",
+    "estimated_length": "short",
+    "status": "pending"
+  },
+  {
+    "title": "The Money Pig",
+    "author": "Hans Christian Andersen",
+    "moral": "Those who sit above the game still end in pieces",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "Sweet Porridge",
+    "author": "Brothers Grimm",
+    "moral": "Power without understanding causes chaos",
+    "estimated_length": "medium",
+    "status": "pending"
+  },
+  {
+    "title": "The Cock and the Jewel",
+    "author": "Aesop",
+    "moral": "Value depends on who is doing the valuing",
+    "estimated_length": "short",
+    "status": "pending"
+  }
+]
