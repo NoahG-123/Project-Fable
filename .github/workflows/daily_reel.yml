@@ -1,0 +1,75 @@
+name: Daily Fairy Tale Reel
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg imagemagick fonts-dejavu-core
+          sudo sed -i 's/rights="none" pattern="@\*"/rights="read|write" pattern="@*"/' /etc/ImageMagick-6/policy.xml
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CHANNEL_HANDLE: ${{ secrets.CHANNEL_HANDLE }}
+          MUSIC_BED_PATH: ${{ secrets.MUSIC_BED_PATH }}
+          CHATTERBOX_VOICE_REFERENCE: ${{ secrets.CHATTERBOX_VOICE_REFERENCE }}
+        run: python pipeline/main.py
+
+      - name: Upload reel
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ github.run_id }}
+          path: working/output/reel.mp4
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Upload debug trail
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: debug-${{ github.run_id }}
+          path: working/debug/
+          retention-days: 3
+          if-no-files-found: warn
+
+      - name: Commit updated stories.json
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add stories.json
+          git diff --staged --quiet || git commit -m "chore: mark story as done [skip ci]"
+          git pull --rebase origin ${{ github.ref_name }} || true
+          git push
