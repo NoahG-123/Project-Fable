@@ -1,0 +1,20 @@
+# Video assembly — 1.0.3 pinned deliberately: the caption/mask handling in
+# pipeline/assemble.py is written around this version's behaviour.
+moviepy==1.0.3
+imageio-ffmpeg
+
+# HTTP + LLM
+requests
+openai
+
+# TTS + word-level timestamps
+chatterbox-tts
+whisper-timestamped
+
+# Imaging / audio
+Pillow
+numpy
+soundfile
+
+# Config
+python-dotenv
