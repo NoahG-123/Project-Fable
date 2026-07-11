@@ -22,7 +22,7 @@ logger = logging.getLogger("grimm.enrich")
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 PRIMARY_MODEL = "deepseek/deepseek-r1"
-FALLBACK_MODEL = "meta-llama/llama-3.3-70b-instruct:free"
+FALLBACK_MODEL = "deepseek/deepseek-v4-pro"
 
 SLEEP_BETWEEN_CALLS = 4          # seconds between any sequential OpenRouter calls
 RATE_LIMIT_BACKOFFS = [6, 12, 24, 48]  # exponential backoff on 429
