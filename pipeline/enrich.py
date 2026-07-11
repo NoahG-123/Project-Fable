@@ -31,7 +31,9 @@ REQUEST_TIMEOUT = 300            # deepseek-r1 reasoning can be slow
 VISUAL_PROMPT_PREFIX = "stickman illustration"
 
 SHOT_RANGES = {"short": (18, 20), "medium": (24, 26), "long": (28, 30)}
-WORD_RANGES = {"short": (80, 100), "medium": (110, 130), "long": (130, 160)}
+# Brief's ranges (80-100 / 110-130 / 130-160) increased 75% — DeepSeek scripts
+# were being rejected by an overly tight gate despite being good scripts.
+WORD_RANGES = {"short": (140, 175), "medium": (193, 228), "long": (228, 280)}
 WORD_COUNT_TOLERANCE = 0.25  # hard-fail only outside +/-25% of the strict range
 
 SYSTEM_PROMPT = """You are a script writer for a short-form video channel that retells classic fairy tales and fables in the style of educational infographic channels. Your scripts are written in second person — the viewer is the main character. You narrate directly to them as if telling them their own story.
@@ -98,9 +100,9 @@ VISUAL PROMPT RULES:
 ---
 
 WORD COUNT:
-- short stories: 80 to 100 words total narration across all shots including ending
-- medium stories: 110 to 130 words total narration across all shots including ending
-- long stories: 130 to 160 words total narration across all shots including ending
+- short stories: 140 to 175 words total narration across all shots including ending
+- medium stories: 193 to 228 words total narration across all shots including ending
+- long stories: 228 to 280 words total narration across all shots including ending
 - The cover has no narration word count — only the title and author read aloud
 
 ---
