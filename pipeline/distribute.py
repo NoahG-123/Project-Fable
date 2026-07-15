@@ -1,8 +1,8 @@
-"""Stage 7 — Distribute.
+"""Stage 7 — Distribute (V2).
 
-The artifacts themselves are uploaded by the GitHub Actions workflow. This
-stage writes the run summary: a markdown report to the debug trail and to
-$GITHUB_STEP_SUMMARY so it appears on the workflow run page.
+Artifacts are uploaded by the GitHub Actions workflow. This stage writes the
+run summary — markdown to the debug trail and to $GITHUB_STEP_SUMMARY — across
+all parts produced.
 """
 
 import logging
@@ -11,47 +11,54 @@ import os
 logger = logging.getLogger("grimm.distribute")
 
 
-def _build_summary(story, script, assembly_info, gate_results, warnings):
-    total_words = sum(len(shot["narration"].split()) for shot in script["shots"])
-    passed = sum(1 for _, ok, _ in gate_results if ok)
+def _build_summary(story, script, part_results, warnings):
+    title = script.get("title", story.get("title", "?"))
+    author = script.get("author", story.get("author", "?"))
 
     lines = [
         "# 🎬 Daily Fairy Tale Reel",
         "",
-        f"**{script['title']}** — {script['author']}",
+        f"**{title}** — {author}",
         "",
-        "| | |",
-        "|---|---|",
-        f"| Story length | {story.get('estimated_length', '?')} |",
-        f"| Total shots | {len(script['shots'])} |",
-        f"| Video duration | {assembly_info['duration']:.1f}s |",
-        f"| Narration word count | {total_words} |",
-        f"| Quality gates | {passed}/{len(gate_results)} passed |",
+        f"- Story length: {story.get('estimated_length', '?')}",
+        f"- Parts produced: {len(part_results)} of {story.get('parts', 1)}",
         "",
-        "## Quality gates",
-        "",
-        "| Gate | Result | Detail |",
-        "|---|---|---|",
     ]
-    for name, ok, detail in gate_results:
-        lines.append(f"| {name} | {'✅ pass' if ok else '❌ fail'} | {detail} |")
+
+    for entry in part_results:
+        pi = entry["part_index"]
+        assembly = entry["assembly"]
+        gates = entry["gates"]
+        words = entry["word_count"]
+        passed = sum(1 for _, ok, _ in gates if ok)
+        lines += [
+            f"## Part {pi}",
+            "",
+            f"- Duration: {assembly['duration']:.1f}s",
+            f"- Shots: {assembly['shots_rendered']}",
+            f"- Narration words: {words}",
+            f"- Quality gates: {passed}/{len(gates)} passed",
+            "",
+            "| Gate | Result | Detail |",
+            "|---|---|---|",
+        ]
+        for name, ok, detail in gates:
+            lines.append(f"| {name} | {'✅' if ok else '❌'} | {detail} |")
+        lines.append("")
 
     if warnings:
-        lines += ["", "## Warnings", ""]
-        lines += [f"- ⚠️ {warning}" for warning in warnings]
+        lines += ["## Warnings", ""]
+        lines += [f"- ⚠️ {w}" for w in warnings]
+        lines.append("")
 
-    lines += [
-        "",
-        "_Download the `reel-*` artifact from this run and post it to Instagram._",
-        "",
-    ]
+    lines += ["_Download the `reels-*` artifact and post each part to Instagram in order._", ""]
     return "\n".join(lines)
 
 
-def write_run_summary(story, script, assembly_info, gate_results, warnings, working_dir="working"):
+def write_run_summary(story, script, part_results, warnings, working_dir="working"):
     """Write the run summary. Never raises."""
     try:
-        summary = _build_summary(story, script, assembly_info, gate_results, warnings)
+        summary = _build_summary(story, script, part_results, warnings)
     except Exception as exc:  # noqa: BLE001
         logger.error("Could not build run summary: %s", exc)
         return

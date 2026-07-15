@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .env
 .venv/
+
+# NOTE: assets/ is intentionally NOT ignored — style_reference.png must be
+# committed and tracked so its raw githubusercontent URL resolves.

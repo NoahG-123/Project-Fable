@@ -1,12 +1,13 @@
-"""Stage 2 — Enrich.
+"""Stage 2 — Enrich (V2).
 
-Call DeepSeek via OpenRouter with the master prompt, then parse and validate
-the JSON script. This is the most critical stage: if the script is malformed
-or incomplete the run is skipped, never continued with a partial script.
+Call DeepSeek R1 via OpenRouter with the V2 master prompt (third person, past
+tense, style-reference voice matching). Parse and validate the multi-part JSON
+response. Validation uses WIDE tolerances — the ranges are safety nets that
+only reject catastrophically broken output, not strict enforcers.
 
 Parse chain on failure: strip markdown fences -> json.loads -> balanced-brace
-extraction of the first {...} block -> one correction message to the model ->
-give up. The full raw response is appended to working/debug/raw_response.txt
+extraction of the first {...} block -> one correction message -> fallback model
+-> give up. The full raw response is appended to working/debug/raw_response.txt
 on every call.
 """
 
@@ -22,110 +23,148 @@ logger = logging.getLogger("grimm.enrich")
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 PRIMARY_MODEL = "deepseek/deepseek-r1"
-FALLBACK_MODEL = "deepseek/deepseek-v4-pro"
+FALLBACK_MODEL = "deepseek/deepseek-chat"
 
 SLEEP_BETWEEN_CALLS = 4          # seconds between any sequential OpenRouter calls
 RATE_LIMIT_BACKOFFS = [6, 12, 24, 48]  # exponential backoff on 429
 REQUEST_TIMEOUT = 300            # deepseek-r1 reasoning can be slow
 
-VISUAL_PROMPT_PREFIX = "stickman illustration"
+VISUAL_PROMPT_PREFIX = "scene:"
 
-SHOT_RANGES = {"short": (18, 20), "medium": (24, 26), "long": (28, 30)}
-# Brief's ranges (80-100 / 110-130 / 130-160) increased 75% — DeepSeek scripts
-# were being rejected by an overly tight gate despite being good scripts.
-WORD_RANGES = {"short": (140, 175), "medium": (193, 228), "long": (228, 280)}
-WORD_COUNT_TOLERANCE = 0.25  # hard-fail only outside +/-25% of the strict range
+# WIDE safety-net ranges (per part) — reject only catastrophically broken output.
+WORD_RANGES = {"short": (50, 300), "medium": (50, 500), "long": (50, 700)}
 
-SYSTEM_PROMPT = """You are a script writer for a short-form video channel that retells classic fairy tales and fables in the style of educational infographic channels. Your scripts are written in second person — the viewer is the main character. You narrate directly to them as if telling them their own story.
+SYSTEM_PROMPT = """You are a script writer for a short-form video channel that retells classic fairy tales and fables in the style of warm, engaging documentary narration. You write in the style of the following example — study it carefully and match its voice, rhythm, pacing, and wit exactly:
 
-Your voice is conversational, confident and warm. You talk like a knowledgeable friend who has read everything and finds the story genuinely interesting. You never mock the story or its characters. The humour comes entirely from the natural absurdity of the situations, delivered with dry understatement and perfect timing. You let ridiculous moments land on their own — you do not point at them and say they are funny.
+---
 
-Your sentences vary in length. Short sentences land punches. Longer sentences carry context and momentum. You use present tense throughout. You use light asides and parenthetical observations occasionally — small human moments that make the narration feel alive rather than scripted.
+STYLE REFERENCE — MATCH THIS VOICE PRECISELY:
 
-You write for a stickman animation style. Every shot in the video is a single frozen stickman illustration. Your visual prompts describe one frozen moment — like briefing an illustrator on a single panel. They are never sequences or actions in progress.
+it's medieval Japan and you're born in 1584 in a small village named Miiamoto Being born in Miiamoto and all your mom obviously gives you the name Benoske Wait what you don't know who your dad is And unfortunately you won't know your mom either because she passes away during childbirth Luckily she had remarried a guy named Shinman Mooney and he's going to be your dad Mooney is like the perfect blend of supremely skilled swordsman and supremely abusive stepfather You don't really like him and you get into a ton of fights with him until he kicks you out of the house when you're six You go to live with your uncle who's pretty chill because he's a Buddhist So you live with your uncle for a few years and you're 12 now And one day you're walking around the town and you see a poster that catches your eye It's an open challenge for a sword duel from a guy named Arma Kihei He's looking to test his skill against anyone who's brave enough to face him You grab a long stick find him and tell him you're down to duel and he accepts The duel begins and Arma draws his blade You circle him with your stick and he charges at you You swing your stick with all your might and you knock his sword to the ground He looks at you with a mixture of confusion and fear in his eyes and on instinct you quickly strike his head and he collapses to the ground You just won your first duel Hooray oh wait He's still alive All right that'll do it Now you just won your first duel Hooray Dueling is pretty fun But your uncle didn't really like you fighting and wants you to avoid violence and seek enlightenment Your uncle is cool so you listen to him until this guy named Tatashima Akiyama challenges you to a duel when you're 15 And you go and kill him too You decide that your life is probably not going to be the one your uncle wished for you And so you change your name to Miiamoto Mousashi and leave his home to go on a quest to become a great warrior
+
+---
+
+CRITICAL DIFFERENCES FROM THE REFERENCE:
+- Write in THIRD PERSON. The viewer is not the character. Use "he", "she", "they" for characters — never "you"
+- Write in PAST TENSE throughout
+- The reference above uses second person — yours does not. Everything else about the voice, rhythm, wit, and pacing — match exactly.
 
 Your output must always be valid JSON. No markdown. No preamble. No explanation. Only the JSON object."""
 
-USER_PROMPT_TEMPLATE = """Retell the following story as a script for a 60-second Instagram Reel:
+USER_PROMPT_TEMPLATE = """Retell the following story as a script for one or more 60-90 second Instagram Reels:
 
 Title: {title}
 Author: {author}
 Moral: {moral}
 Estimated Length: {estimated_length}
+Number of Parts: {parts}
 
 ---
 
-VOICE AND TONE RULES — follow these exactly:
+VOICE AND TONE — follow exactly:
 
-- Write in second person throughout. The viewer is the main character. Use "you" and "your" — never "he", "she" or "they" for the protagonist
-- Write in present tense throughout
-- Narrate like a knowledgeable friend telling you your own story — confident, warm, conversational
-- The very first shot of the story drops the viewer immediately into the world. No preamble. No wind-up. Just start. Like: "You are born the youngest of three brothers in a small woodcutter's family" or "You are a tortoise and a hare has just challenged you to a race and everyone thinks this is hilarious"
-- Humour comes from understatement and the natural absurdity of situations. Never write a joke. Never point at something and call it funny. Let the moment land on its own
-- Use short sentences when action happens. Use longer sentences to carry context and build momentum
-- Occasionally use light asides — small parenthetical observations that feel human and unscripted. Do not overuse them
-- Never use crude humour, mockery, sarcasm or incomplete sentences
-- The ending states the outcome and moral matter-of-factly — no grand sweeping conclusion, just the natural landing of the story
+- Third person, past tense throughout
+- Match the wit, rhythm, pacing and warmth of the style reference in the system prompt exactly
+- Let absurd situations land naturally — never point at them or call them funny
+- Use short sentences for action. Longer sentences for context and momentum
+- Occasional dry asides are good — do not overuse them
+- Never use crude humour, mockery, or incomplete sentences
+- The ending of each part lands naturally — no grand speeches
 
 ---
 
-STRUCTURE RULES:
+PARTS SYSTEM:
 
-The script has two parts: cover and shots.
+If parts is 1: write one complete self-contained script.
+
+If parts is 2 or 3: split the story at natural dramatic tension points — not arbitrarily. Each part must:
+- End at a genuine cliffhanger or moment of unresolved tension
+- Open with one sentence recapping where the previous part left off (except Part 1)
+- Feel satisfying on its own while leaving the viewer wanting the next part
+- Be clearly labelled in the title_readout as "Part 1", "Part 2" etc.
+
+---
+
+STRUCTURE:
+
+Each part has a cover and shots.
 
 Cover:
-One shot. No narration except the title and author read aloud, exactly as written. The visual must be the single most dramatic or visually interesting moment of the entire story. It is the thumbnail — it must make someone stop scrolling. Bold, dynamic, immediately readable.
+- No narration except title_readout spoken aloud
+- title_readout format: "[Title] — [Author]" for Part 1, "[Title] Part 2 — [Author]" for subsequent parts
+- visual_prompt must capture the single most dramatic or visually interesting moment of that part
+- Must make someone stop scrolling — bold, dynamic, immediately readable
 
 Shots:
-The full story told shot by shot. Shot 1 opens immediately — no hook, no preamble, straight into the world. Each shot is one frozen visual moment. Narration per shot is one to two sentences — short, punchy, present tense. The story must flow naturally from shot to shot with clear momentum. Never linger. Never repeat. Keep moving.
+- Shot 1 opens immediately into the story world — no preamble, no wind-up
+- Each shot is one frozen visual moment
+- One to two sentences of narration per shot
+- Natural momentum throughout — never linger, never repeat
+- Final two shots are the ending — outcome first, then moral lands naturally
 
-The final two shots are the ending. State the outcome plainly in the second to last shot. Land the moral naturally in the final shot — not as a lesson being taught, just as the obvious conclusion any reasonable person would draw. Matter-of-fact. No fanfare.
-
-Shot count by estimated length:
-- short: 18 to 20 shots total
-- medium: 24 to 26 shots total
-- long: 28 to 30 shots total
+Shot count per part:
+- short (1 part only): 18 to 22 shots
+- medium per part: 20 to 24 shots
+- long per part: 22 to 26 shots
 
 ---
 
 VISUAL PROMPT RULES:
 
-- Every visual prompt describes one single frozen stickman moment — like a storyboard panel
-- Always begin with "stickman illustration —"
-- White background, bold black lines, minimal detail, simple and clear
-- Describe character expressions, positioning and key objects
-- The cover visual prompt must feel dynamic and dramatic — the most arresting image of the whole story
-- Never describe motion, sequences or actions in progress — only the frozen moment
+Every visual_prompt has two parts separated by " | ":
+
+scene: [background description] | character: [character description and pose]
+
+Example:
+"scene: warm forest clearing, large oak tree, golden afternoon light, illustrated storybook style, muted earthy tones | character: young stickman boy standing at base of tree, looking up with wide curious eyes, one hand reaching toward a glowing object inside the hollow"
+
+Rules:
+- Always use this exact format with the pipe separator
+- Scene describes the background environment only
+- Character describes who is present, their pose, and their expression
+- Both must be specific and visual — no abstract descriptions
+- Muted earthy tones, clean line work, hand-drawn storybook aesthetic on every prompt
+- Never describe motion or sequences — only the single frozen moment
 
 ---
 
-WORD COUNT:
-- short stories: 140 to 175 words total narration across all shots including ending
-- medium stories: 193 to 228 words total narration across all shots including ending
-- long stories: 228 to 280 words total narration across all shots including ending
-- The cover has no narration word count — only the title and author read aloud
+WORD COUNT — these are targets, not hard limits:
+- short: aim for 150 to 200 words total narration
+- medium: aim for 200 to 280 words per part
+- long: aim for 250 to 320 words per part
+
+Count your words carefully. If you exceed the target by more than 50 words, trim before outputting.
 
 ---
 
-Output this exact JSON structure:
+OUTPUT JSON STRUCTURE:
 
+For a single part story:
 {{
   "title": "string",
   "author": "string",
-  "cover": {{
-    "title_readout": "string — exactly '[Title] — [Author]'",
-    "visual_prompt": "string"
-  }},
-  "shots": [
+  "parts": 1,
+  "scripts": [
     {{
-      "shot_number": 1,
-      "narration": "string",
-      "visual_prompt": "string"
+      "part": 1,
+      "cover": {{
+        "title_readout": "string",
+        "visual_prompt": "string"
+      }},
+      "shots": [
+        {{
+          "shot_number": 1,
+          "narration": "string",
+          "visual_prompt": "string"
+        }}
+      ]
     }}
   ]
 }}
 
-The final two entries in the shots array are the ending. Do not add a separate ending key. Do not include any text outside the JSON object."""
+For multi-part stories, the scripts array contains one object per part with the same structure.
+
+Do not include any text outside the JSON object."""
 
 CORRECTION_MESSAGE = (
     "Your previous response was not valid JSON. Respond again with ONLY the valid "
@@ -151,7 +190,7 @@ def _call_openrouter(messages, model, api_key, debug_dir, label):
     """Make one chat-completions call. Returns the content string or None.
 
     Handles 429 with exponential backoff (6s, 12s, 24s, 48s) — never retries
-    immediately. Other transient errors get one retry per backoff slot too.
+    immediately. Server errors get one retry per backoff slot too.
     """
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -181,8 +220,7 @@ def _call_openrouter(messages, model, api_key, debug_dir, label):
 
         _log_raw_response(
             f"HTTP {response.status_code}\n{response.text}",
-            debug_dir,
-            f"{label} attempt {attempt + 1} (model={model})",
+            debug_dir, f"{label} attempt {attempt + 1} (model={model})",
         )
 
         if response.status_code == 429:
@@ -195,10 +233,7 @@ def _call_openrouter(messages, model, api_key, debug_dir, label):
             return None
 
         if response.status_code != 200:
-            logger.error(
-                "[%s] OpenRouter returned HTTP %d: %s",
-                label, response.status_code, response.text[:500],
-            )
+            logger.error("[%s] OpenRouter returned HTTP %d: %s", label, response.status_code, response.text[:500])
             if attempt < len(RATE_LIMIT_BACKOFFS) and response.status_code >= 500:
                 time.sleep(RATE_LIMIT_BACKOFFS[attempt])
                 continue
@@ -220,7 +255,6 @@ def _call_openrouter(messages, model, api_key, debug_dir, label):
 
 
 def _strip_markdown_fences(text):
-    """Remove ```json ... ``` (or bare ```) fences wrapping the payload."""
     stripped = text.strip()
     stripped = re.sub(r"^```[a-zA-Z]*\s*\n?", "", stripped)
     stripped = re.sub(r"\n?```\s*$", "", stripped)
@@ -261,10 +295,8 @@ def _extract_first_json_object(text):
 
 
 def _parse_script(raw_content):
-    """Parse an LLM response into a dict, or None if unrecoverable."""
     if not raw_content:
         return None
-
     cleaned = _strip_markdown_fences(raw_content)
     try:
         parsed = json.loads(cleaned)
@@ -282,35 +314,38 @@ def _parse_script(raw_content):
 
 
 def _repair_visual_prompts(script):
-    """Ensure every visual_prompt starts with the stickman prefix.
-
-    The stickman style is the channel's entire identity, so a missing prefix
-    is repaired (and logged) rather than failing the whole run over it.
-    """
+    """Ensure every visual_prompt starts with 'scene:'. Repair (and log) if not."""
     def repair(prompt, where):
         if not isinstance(prompt, str):
             return prompt
-        if prompt.strip().lower().startswith(VISUAL_PROMPT_PREFIX):
-            return prompt.strip()
-        logger.warning("Repairing %s visual_prompt missing stickman prefix", where)
-        return f"stickman illustration — {prompt.strip()}"
+        clean = prompt.strip()
+        if clean.lower().startswith(VISUAL_PROMPT_PREFIX):
+            return clean
+        logger.warning("Repairing %s visual_prompt missing 'scene:' prefix", where)
+        if "|" in clean:
+            return f"scene: {clean}"
+        return f"scene: {clean} | character: stickman figure, storybook style, muted earthy tones"
 
-    cover = script.get("cover")
-    if isinstance(cover, dict) and cover.get("visual_prompt"):
-        cover["visual_prompt"] = repair(cover["visual_prompt"], "cover")
-    for shot in script.get("shots") or []:
-        if isinstance(shot, dict) and shot.get("visual_prompt"):
-            shot["visual_prompt"] = repair(
-                shot["visual_prompt"], f"shot {shot.get('shot_number', '?')}"
-            )
+    for part in script.get("scripts") or []:
+        if not isinstance(part, dict):
+            continue
+        cover = part.get("cover")
+        if isinstance(cover, dict) and cover.get("visual_prompt"):
+            cover["visual_prompt"] = repair(cover["visual_prompt"], f"part {part.get('part', '?')} cover")
+        for shot in part.get("shots") or []:
+            if isinstance(shot, dict) and shot.get("visual_prompt"):
+                shot["visual_prompt"] = repair(
+                    shot["visual_prompt"],
+                    f"part {part.get('part', '?')} shot {shot.get('shot_number', '?')}",
+                )
     return script
 
 
 def validate_script(script, story):
-    """Validate the parsed script against every requirement in the brief.
+    """Validate the parsed multi-part script. Returns a list of error strings.
 
-    Returns a list of error strings — empty means the script is usable.
-    Every failed check is reported, not just the first.
+    Empty list means usable. Word-count ranges are WIDE safety nets — they only
+    catch catastrophically broken output.
     """
     errors = []
 
@@ -322,73 +357,70 @@ def validate_script(script, story):
     if not (isinstance(script.get("author"), str) and script["author"].strip()):
         errors.append("'author' is missing or empty")
 
-    cover = script.get("cover")
-    if not isinstance(cover, dict):
-        errors.append("'cover' is missing or not an object")
-    else:
-        if not (isinstance(cover.get("title_readout"), str) and cover["title_readout"].strip()):
-            errors.append("cover.title_readout is missing or empty")
-        if not (isinstance(cover.get("visual_prompt"), str) and cover["visual_prompt"].strip()):
-            errors.append("cover.visual_prompt is missing or empty")
-        elif not cover["visual_prompt"].strip().lower().startswith(VISUAL_PROMPT_PREFIX):
-            errors.append("cover.visual_prompt does not begin with 'stickman illustration —'")
-
-    shots = script.get("shots")
-    if not isinstance(shots, list) or len(shots) < 15:
-        errors.append(
-            f"'shots' must be a list with at least 15 entries "
-            f"(got {len(shots) if isinstance(shots, list) else 'non-list'})"
-        )
-        return errors  # per-shot checks are meaningless without a usable shots list
-
-    total_words = 0
-    for index, shot in enumerate(shots):
-        where = f"shots[{index}]"
-        if not isinstance(shot, dict):
-            errors.append(f"{where} is not an object")
-            continue
-        if "shot_number" not in shot:
-            errors.append(f"{where} is missing 'shot_number'")
-        narration = shot.get("narration")
-        if not (isinstance(narration, str) and narration.strip()):
-            errors.append(f"{where} has empty or missing narration")
-        else:
-            total_words += len(narration.split())
-        visual = shot.get("visual_prompt")
-        if not (isinstance(visual, str) and visual.strip()):
-            errors.append(f"{where} has empty or missing visual_prompt")
-        elif not visual.strip().lower().startswith(VISUAL_PROMPT_PREFIX):
-            errors.append(f"{where} visual_prompt does not begin with 'stickman illustration —'")
+    scripts = script.get("scripts")
+    if not isinstance(scripts, list) or not scripts:
+        errors.append("'scripts' must be a non-empty list of parts")
+        return errors
 
     length = story.get("estimated_length", "medium")
     low, high = WORD_RANGES.get(length, WORD_RANGES["medium"])
-    hard_low = int(low * (1 - WORD_COUNT_TOLERANCE))
-    hard_high = int(high * (1 + WORD_COUNT_TOLERANCE))
-    if not hard_low <= total_words <= hard_high:
-        errors.append(
-            f"total narration word count {total_words} is outside the acceptable "
-            f"range for '{length}' stories ({hard_low}-{hard_high})"
-        )
-    elif not low <= total_words <= high:
-        logger.warning(
-            "Narration word count %d is outside the strict %s range (%d-%d) "
-            "but within tolerance — continuing",
-            total_words, length, low, high,
-        )
 
-    shot_low, shot_high = SHOT_RANGES.get(length, SHOT_RANGES["medium"])
-    if not shot_low <= len(shots) <= shot_high:
-        logger.warning(
-            "Shot count %d is outside the expected %s range (%d-%d) — continuing "
-            "since the minimum of 15 is met",
-            len(shots), length, shot_low, shot_high,
-        )
+    for pi, part in enumerate(scripts):
+        where = f"scripts[{pi}]"
+        if not isinstance(part, dict):
+            errors.append(f"{where} is not an object")
+            continue
+
+        cover = part.get("cover")
+        if not isinstance(cover, dict):
+            errors.append(f"{where}.cover is missing or not an object")
+        else:
+            if not (isinstance(cover.get("title_readout"), str) and cover["title_readout"].strip()):
+                errors.append(f"{where}.cover.title_readout is missing or empty")
+            cvp = cover.get("visual_prompt")
+            if not (isinstance(cvp, str) and cvp.strip()):
+                errors.append(f"{where}.cover.visual_prompt is missing or empty")
+            elif not cvp.strip().lower().startswith(VISUAL_PROMPT_PREFIX):
+                errors.append(f"{where}.cover.visual_prompt does not begin with 'scene:'")
+
+        shots = part.get("shots")
+        if not isinstance(shots, list) or len(shots) < 15:
+            errors.append(
+                f"{where}.shots must be a list with at least 15 entries "
+                f"(got {len(shots) if isinstance(shots, list) else 'non-list'})"
+            )
+            continue
+
+        total_words = 0
+        for si, shot in enumerate(shots):
+            sw = f"{where}.shots[{si}]"
+            if not isinstance(shot, dict):
+                errors.append(f"{sw} is not an object")
+                continue
+            if "shot_number" not in shot:
+                errors.append(f"{sw} is missing 'shot_number'")
+            narration = shot.get("narration")
+            if not (isinstance(narration, str) and narration.strip()):
+                errors.append(f"{sw} has empty or missing narration")
+            else:
+                total_words += len(narration.split())
+            visual = shot.get("visual_prompt")
+            if not (isinstance(visual, str) and visual.strip()):
+                errors.append(f"{sw} has empty or missing visual_prompt")
+            elif not visual.strip().lower().startswith(VISUAL_PROMPT_PREFIX):
+                errors.append(f"{sw} visual_prompt does not begin with 'scene:'")
+
+        if not low <= total_words <= high:
+            errors.append(
+                f"{where} narration word count {total_words} is outside the wide "
+                f"safety range for '{length}' parts ({low}-{high})"
+            )
 
     return errors
 
 
 def generate_script(story, working_dir="working"):
-    """Generate and validate the video script for a story. Returns dict or None."""
+    """Generate and validate the V2 multi-part script. Returns dict or None."""
     debug_dir = os.path.join(working_dir, "debug")
 
     api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -401,6 +433,7 @@ def generate_script(story, working_dir="working"):
         author=story["author"],
         moral=story["moral"],
         estimated_length=story["estimated_length"],
+        parts=story.get("parts", 1),
     )
     base_messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -422,9 +455,7 @@ def generate_script(story, working_dir="working"):
                 {"role": "assistant", "content": content},
                 {"role": "user", "content": CORRECTION_MESSAGE},
             ]
-            content = _call_openrouter(
-                correction_messages, model, api_key, debug_dir, f"{model} correction"
-            )
+            content = _call_openrouter(correction_messages, model, api_key, debug_dir, f"{model} correction")
             script = _parse_script(content) if content else None
 
         if script is None:
@@ -439,11 +470,9 @@ def generate_script(story, working_dir="working"):
                 logger.error("  VALIDATION FAILED: %s", error)
             continue
 
-        total_words = sum(len(s["narration"].split()) for s in script["shots"])
-        logger.info(
-            "Validated script from %s: %d shots, %d narration words",
-            model, len(script["shots"]), total_words,
-        )
+        n_parts = len(script["scripts"])
+        total_shots = sum(len(p.get("shots", [])) for p in script["scripts"])
+        logger.info("Validated script from %s: %d part(s), %d total shots", model, n_parts, total_shots)
         return script
 
     logger.error("All models failed to produce a valid script — skipping run")

@@ -42,16 +42,18 @@ jobs:
       - name: Run pipeline
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
           CHANNEL_HANDLE: ${{ secrets.CHANNEL_HANDLE }}
+          VOICE_REFERENCE_PATH: ${{ secrets.VOICE_REFERENCE_PATH }}
           MUSIC_BED_PATH: ${{ secrets.MUSIC_BED_PATH }}
-          CHATTERBOX_VOICE_REFERENCE: ${{ secrets.CHATTERBOX_VOICE_REFERENCE }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: python pipeline/main.py
 
-      - name: Upload reel
+      - name: Upload reels
         uses: actions/upload-artifact@v4
         with:
-          name: reel-${{ github.run_id }}
-          path: working/output/reel.mp4
+          name: reels-${{ github.run_id }}
+          path: working/output/
           retention-days: 7
           if-no-files-found: error
 
