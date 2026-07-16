@@ -94,7 +94,7 @@ class _TTS:
         from gradio_client import Client
 
         token = os.environ.get("HUGGINGFACE_TOKEN") or None
-        self.client = Client(HF_SPACE, hf_token=token, download_files=True)
+        self.client = Client(HF_SPACE, token=token)
         logger.info("Connected to Hugging Face Space %s", HF_SPACE)
 
     def synthesize(self, text):
@@ -102,13 +102,12 @@ class _TTS:
         import soundfile as sf
         from gradio_client import handle_file
 
-        if self.client is None:
-            self.connect()
-
         audio_prompt = handle_file(self.reference) if self.reference else None
         last_error = None
         for attempt in range(1, HF_MAX_ATTEMPTS + 1):
             try:
+                if self.client is None:
+                    self.connect()
                 result = self.client.predict(
                     text,
                     audio_prompt,
