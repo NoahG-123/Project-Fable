@@ -4,13 +4,15 @@
     "author": "Brothers Grimm",
     "moral": "Kindness is rewarded in unexpected ways",
     "estimated_length": "medium",
-    "status": "done"
+    "parts": 2,
+    "status": "pending"
   },
   {
     "title": "The Boy Who Could Not Shiver",
     "author": "Brothers Grimm",
     "moral": "Fear cannot be learned, only met",
     "estimated_length": "long",
+    "parts": 3,
     "status": "done"
   },
   {
@@ -18,6 +20,7 @@
     "author": "Aesop",
     "moral": "Necessity is the mother of invention",
     "estimated_length": "short",
+    "parts": 1,
     "status": "done"
   },
   {
@@ -25,6 +28,7 @@
     "author": "Brothers Grimm",
     "moral": "Quiet perseverance can undo the darkest curse",
     "estimated_length": "long",
+    "parts": 3,
     "status": "done"
   },
   {
@@ -32,13 +36,15 @@
     "author": "Brothers Grimm",
     "moral": "Diligence is rewarded and laziness repaid in kind",
     "estimated_length": "medium",
-    "status": "done"
+    "parts": 2,
+    "status": "pending"
   },
   {
     "title": "Belling the Cat",
     "author": "Aesop",
     "moral": "It is one thing to propose, another to carry it out",
     "estimated_length": "short",
+    "parts": 1,
     "status": "done"
   },
   {
@@ -46,13 +52,15 @@
     "author": "Brothers Grimm",
     "moral": "Confidence can carry you further than strength",
     "estimated_length": "long",
-    "status": "done"
+    "parts": 3,
+    "status": "pending"
   },
   {
     "title": "The Three Army Surgeons",
     "author": "Brothers Grimm",
     "moral": "Pride in your own skill can blind you to the obvious",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -60,6 +68,7 @@
     "author": "Aesop",
     "moral": "Gentle persuasion succeeds where force fails",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -67,6 +76,7 @@
     "author": "Brothers Grimm",
     "moral": "Patience and goodness outlast cruelty",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -74,6 +84,7 @@
     "author": "Brothers Grimm",
     "moral": "Loyalty deserves loyalty in return",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -81,6 +92,7 @@
     "author": "Aesop",
     "moral": "One bad turn deserves another",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -88,6 +100,7 @@
     "author": "Brothers Grimm",
     "moral": "Cleverness can defeat the most practiced evil",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -95,6 +108,7 @@
     "author": "Brothers Grimm",
     "moral": "Trust your instincts when something feels wrong",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -102,6 +116,7 @@
     "author": "Aesop",
     "moral": "We often despise what is most useful to us",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -109,6 +124,7 @@
     "author": "Brothers Grimm",
     "moral": "What is fated will find its way",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -116,6 +132,7 @@
     "author": "Aesop",
     "moral": "Fine clothes may disguise, but words reveal a fool",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -123,6 +140,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Silent devotion can break any spell",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -130,6 +148,7 @@
     "author": "Brothers Grimm",
     "moral": "Those written off can still find a new life together",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -137,6 +156,7 @@
     "author": "Aesop",
     "moral": "Slow and steady wins the race",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -144,6 +164,7 @@
     "author": "Hans Christian Andersen",
     "moral": "A loving heart is stronger than the coldest reason",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -151,6 +172,7 @@
     "author": "Brothers Grimm",
     "moral": "A careless promise can cost you dearly",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -158,6 +180,7 @@
     "author": "Aesop",
     "moral": "Liars are not believed even when they tell the truth",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -165,6 +188,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Constancy holds even when the world does not",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -172,6 +196,7 @@
     "author": "Brothers Grimm",
     "moral": "Keeping a promise matters more than liking it",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -179,6 +204,7 @@
     "author": "Aesop",
     "moral": "It is easy to despise what you cannot have",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -186,6 +212,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Give your worst self an inch and it will take your place",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -193,6 +220,7 @@
     "author": "Brothers Grimm",
     "moral": "Wits and courage can outmatch wickedness",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -200,6 +228,7 @@
     "author": "Aesop",
     "moral": "Prepare today for the needs of tomorrow",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -207,6 +236,7 @@
     "author": "Hans Christian Andersen",
     "moral": "The world often fails its gentlest souls",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -214,6 +244,7 @@
     "author": "Brothers Grimm",
     "moral": "Love finds a way past every wall",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -221,6 +252,7 @@
     "author": "Aesop",
     "moral": "No act of kindness is ever wasted",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -228,6 +260,7 @@
     "author": "Hans Christian Andersen",
     "moral": "The truest wonders are found by those who keep seeking",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -235,6 +268,7 @@
     "author": "Brothers Grimm",
     "moral": "Every secret leaves a trail",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -242,6 +276,7 @@
     "author": "Aesop",
     "moral": "Grasp at the shadow and you lose the substance",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -249,6 +284,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Love redeems even a divided nature",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -256,6 +292,7 @@
     "author": "Brothers Grimm",
     "moral": "Endless wanting leaves you with nothing",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -263,6 +300,7 @@
     "author": "Aesop",
     "moral": "Greed destroys the source of all good",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -270,6 +308,7 @@
     "author": "Hans Christian Andersen",
     "moral": "You may simply be a swan among ducks",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -277,6 +316,7 @@
     "author": "Brothers Grimm",
     "moral": "Wrongdoing cannot stay buried forever",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -284,6 +324,7 @@
     "author": "Aesop",
     "moral": "A simple life in peace beats luxury lived in fear",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -291,6 +332,7 @@
     "author": "Hans Christian Andersen",
     "moral": "No title can survive a child telling the truth",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -298,6 +340,7 @@
     "author": "Brothers Grimm",
     "moral": "Devotion between siblings survives every trial",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -305,6 +348,7 @@
     "author": "Aesop",
     "moral": "Appearances are deceptive",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -312,6 +356,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Belonging finds you when you stay true to yourself",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -319,6 +364,7 @@
     "author": "Brothers Grimm",
     "moral": "Pride must sometimes be humbled to find happiness",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -326,6 +372,7 @@
     "author": "Aesop",
     "moral": "It is better to bend than to break",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -333,6 +380,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Some loves cost more than they return",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -340,6 +388,7 @@
     "author": "Brothers Grimm",
     "moral": "Determination can undo even a careless curse",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -347,6 +396,7 @@
     "author": "Aesop",
     "moral": "Do not count your chickens before they are hatched",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -354,6 +404,7 @@
     "author": "Hans Christian Andersen",
     "moral": "True nature shows itself in the smallest things",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -361,6 +412,7 @@
     "author": "Brothers Grimm",
     "moral": "Steadfast love breaks enchantment",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -368,6 +420,7 @@
     "author": "Aesop",
     "moral": "Beware of flatterers",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -375,6 +428,7 @@
     "author": "Hans Christian Andersen",
     "moral": "The real thing is worth more than the finest imitation",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -382,6 +436,7 @@
     "author": "Brothers Grimm",
     "moral": "The kind-hearted succeed where the proud fail",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -389,6 +444,7 @@
     "author": "Aesop",
     "moral": "Be careful what you wish for",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -396,6 +452,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Fortune favours the audacious",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -403,6 +460,7 @@
     "author": "Brothers Grimm",
     "moral": "Compassion for small creatures brings great help",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -410,6 +468,7 @@
     "author": "Aesop",
     "moral": "People often begrudge others what they cannot enjoy themselves",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -417,6 +476,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Those who prize trinkets over sincerity lose both",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -424,6 +484,7 @@
     "author": "Brothers Grimm",
     "moral": "Ignoring good advice costs you twice",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -431,6 +492,7 @@
     "author": "Aesop",
     "moral": "Equals make the safest company",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -438,6 +500,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Charm without substance eventually burns up",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -445,6 +508,7 @@
     "author": "Brothers Grimm",
     "moral": "True loyalty bears any burden",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -452,6 +516,7 @@
     "author": "Aesop",
     "moral": "Union gives strength",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -459,6 +524,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Longing for tomorrow wastes the only day you have",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -466,6 +532,7 @@
     "author": "Brothers Grimm",
     "moral": "Do not open the door to smooth talkers",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -473,6 +540,7 @@
     "author": "Aesop",
     "moral": "Learn from the misfortunes of others",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -480,6 +548,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Imagination sees what grown-ups have forgotten",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -487,6 +556,7 @@
     "author": "Brothers Grimm",
     "moral": "Generosity repays generosity",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -494,6 +564,7 @@
     "author": "Aesop",
     "moral": "Those who pretend to be what they are not get found out",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -501,6 +572,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Vanity can carry you where you never meant to go",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -508,6 +580,7 @@
     "author": "Brothers Grimm",
     "moral": "Give freely and good returns to you",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -515,6 +588,7 @@
     "author": "Aesop",
     "moral": "The wise do not let themselves be fooled twice",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -522,6 +596,7 @@
     "author": "Hans Christian Andersen",
     "moral": "We long for what we do not understand",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -529,6 +604,7 @@
     "author": "Brothers Grimm",
     "moral": "Kindness given without suspicion is repaid in full",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -536,6 +612,7 @@
     "author": "Aesop",
     "moral": "Do not overestimate your own powers",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -543,6 +620,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Self-importance ends in the gutter",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -550,6 +628,7 @@
     "author": "Brothers Grimm",
     "moral": "Truth rises no matter who tries to bury it",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -557,6 +636,7 @@
     "author": "Aesop",
     "moral": "There is always someone worse off than you",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -564,6 +644,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Even the smallest thing can be someone's whole hope",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -571,6 +652,7 @@
     "author": "Brothers Grimm",
     "moral": "What you are given in trust shapes what you become",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -578,6 +660,7 @@
     "author": "Aesop",
     "moral": "Honesty is the best policy",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -585,6 +668,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Worth is not decided by those who misjudge you",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -592,6 +676,7 @@
     "author": "Brothers Grimm",
     "moral": "Never discard those who have served you well",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -599,6 +684,7 @@
     "author": "Aesop",
     "moral": "Expect no reward for serving the wicked",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -606,6 +692,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Wishes granted are rarely wishes understood",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -613,6 +700,7 @@
     "author": "Brothers Grimm",
     "moral": "Character outlasts appearance",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -620,6 +708,7 @@
     "author": "Aesop",
     "moral": "Fine feathers do not make fine birds",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -627,6 +716,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Goodness given freely returns when you need it most",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -634,6 +724,7 @@
     "author": "Brothers Grimm",
     "moral": "Envy digs its own hole",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -641,6 +732,7 @@
     "author": "Aesop",
     "moral": "Kindness shown to the wicked is wasted",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -648,6 +740,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Every night tells a different story to those who dream",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -655,6 +748,7 @@
     "author": "Brothers Grimm",
     "moral": "Every skill matters when they work together",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -662,6 +756,7 @@
     "author": "Aesop",
     "moral": "The smaller the mind, the greater the conceit",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -669,6 +764,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Mockery has a way of coming home to roost",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -676,6 +772,7 @@
     "author": "Brothers Grimm",
     "moral": "Being ordinary is no reason to be treated as less",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -683,6 +780,7 @@
     "author": "Aesop",
     "moral": "A small gain now is worth more than a promise of more",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -690,6 +788,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Pride that will not bend is broken instead",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -697,6 +796,7 @@
     "author": "Brothers Grimm",
     "moral": "Faithful service in small things earns great reward",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -704,6 +804,7 @@
     "author": "Aesop",
     "moral": "Lead by example, not by words",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -711,6 +812,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Memory keeps alive what time takes away",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -718,6 +820,7 @@
     "author": "Brothers Grimm",
     "moral": "Think before you set loose what you cannot control",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -725,6 +828,7 @@
     "author": "Aesop",
     "moral": "Mind what is at your feet before gazing at the stars",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -732,6 +836,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Contentment needs very little to be complete",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -739,6 +844,7 @@
     "author": "Brothers Grimm",
     "moral": "No one cheats death twice",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -746,6 +852,7 @@
     "author": "Aesop",
     "moral": "Inciting others to wrong is as bad as doing the wrong",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -753,6 +860,7 @@
     "author": "Hans Christian Andersen",
     "moral": "A boaster's history grows with every telling",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -760,6 +868,7 @@
     "author": "Brothers Grimm",
     "moral": "True love recognises what disguise conceals",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -767,6 +876,7 @@
     "author": "Aesop",
     "moral": "Wealth unused might as well not exist",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -774,6 +884,7 @@
     "author": "Hans Christian Andersen",
     "moral": "A rumour grows a feather into five hens",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -781,6 +892,7 @@
     "author": "Brothers Grimm",
     "moral": "Betrayal returns to the betrayer",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -788,6 +900,7 @@
     "author": "Aesop",
     "moral": "A humble life in safety beats grandeur lived in peril",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -795,6 +908,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Losing your polish can reveal your purpose",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -802,6 +916,7 @@
     "author": "Brothers Grimm",
     "moral": "Persistence succeeds where haste fails",
     "estimated_length": "long",
+    "parts": 3,
     "status": "pending"
   },
   {
@@ -809,6 +924,7 @@
     "author": "Aesop",
     "moral": "It is easy to be brave from a safe distance",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -816,6 +932,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Endless choosing leaves you with nothing chosen",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -823,6 +940,7 @@
     "author": "Brothers Grimm",
     "moral": "Contentment is worth more than possessions",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -830,6 +948,7 @@
     "author": "Aesop",
     "moral": "Misfortune tests the sincerity of friends",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -837,6 +956,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Self-regard survives any amount of evidence",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -844,6 +964,7 @@
     "author": "Brothers Grimm",
     "moral": "Envy of another's role can ruin what works",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -851,6 +972,7 @@
     "author": "Aesop",
     "moral": "Freedom is too high a price to pay for revenge",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   },
   {
@@ -858,6 +980,7 @@
     "author": "Hans Christian Andersen",
     "moral": "Those who sit above the game still end in pieces",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -865,6 +988,7 @@
     "author": "Brothers Grimm",
     "moral": "Power without understanding causes chaos",
     "estimated_length": "medium",
+    "parts": 2,
     "status": "pending"
   },
   {
@@ -872,6 +996,7 @@
     "author": "Aesop",
     "moral": "Value depends on who is doing the valuing",
     "estimated_length": "short",
+    "parts": 1,
     "status": "pending"
   }
 ]

@@ -1,4 +1,4 @@
-"""All brand constants for the Grimm pipeline.
+"""All brand constants for the Grimm pipeline (V2).
 
 Every colour, font, size and layout value used anywhere in the pipeline
 lives here. Never hardcode these values in other modules.
@@ -12,9 +12,9 @@ CANVAS_HEIGHT = 1920
 FPS = 30
 
 # Colours
-BACKGROUND = "#FFFFFF"    # white — matches stickman illustration style
+BACKGROUND = "#F5F0E8"    # warm off-white — matches storybook aesthetic
 INK = "#1A1A1A"           # near-black for text
-ACCENT = "#E83B2A"        # bold red — caption emphasis, title accents
+ACCENT = "#E83B2A"        # bold red — caption emphasis
 CAPTION_BG = "#000000"    # caption pill background (apply at 70% opacity)
 CAPTION_TEXT = "#FFFFFF"  # caption primary text
 CAPTION_BG_OPACITY = 0.70
@@ -52,7 +52,7 @@ HANDLE_FONT_SIZE = 32
 # Layout
 CAPTION_Y_RATIO = 0.72          # captions at 72% of frame height
 WATERMARK_MARGIN = 32           # pixels from edge
-CAPTION_MAX_WIDTH_RATIO = 0.80  # captions max 80% of frame width
+CAPTION_MAX_WIDTH = 0.80        # captions max 80% of frame width
 
 
 def hex_to_rgb(hex_colour):

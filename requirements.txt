@@ -7,8 +7,11 @@ imageio-ffmpeg
 requests
 openai
 
-# TTS + word-level timestamps
-chatterbox-tts
+# Voice: Chatterbox via the Hugging Face Space (gradio_client) + auth
+huggingface_hub
+gradio_client
+
+# Word-level caption timestamps (runs locally on CPU)
 whisper-timestamped
 
 # Imaging / audio

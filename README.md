@@ -1,49 +1,57 @@
-# Project Fable — Grimm Pipeline
+# Project Fable — Grimm Pipeline (V2)
 
 A fully automated Instagram Reels pipeline. Every day it retells one classic
-fairy tale or fable (Brothers Grimm, Aesop, Hans Christian Andersen) as a
-60-second vertical video: stickman illustrations, kinetic captions, and a
-confident second-person narrator — "you are the tortoise, and a hare has just
-challenged you to a race."
+fairy tale or fable (Brothers Grimm, Aesop, Hans Christian Andersen) as one or
+more 60–90 second vertical videos: style-anchored storybook illustrations,
+kinetic captions, and warm third-person documentary narration.
 
-The pipeline runs entirely on GitHub Actions. The only human touchpoint is
-downloading the finished video artifact and posting it to Instagram.
+The channel is faceless — the illustrations and narrator voice are the entire
+identity. The pipeline runs autonomously on GitHub Actions. The only human
+touchpoint is downloading the artifact and posting to Instagram.
 
 ## How it works
 
-Each run walks through seven stages (`pipeline/main.py` orchestrates):
+Seven stages, orchestrated by `pipeline/main.py`:
 
-1. **Ingest** — picks the first `"pending"` story from `stories.json`, marks it
-   `"done"` (the workflow commits the change back, so the queue advances daily).
-2. **Enrich** — DeepSeek R1 via OpenRouter writes the shot-by-shot script as
-   JSON, which is strictly validated before anything else runs.
-3. **Assets** — Pollinations.ai generates one stickman illustration per shot
-   (free API, no key; one seed per run for visual consistency).
-4. **Voice** — Chatterbox TTS narrates the full script on CPU;
-   whisper-timestamped extracts word-level timestamps.
-5. **Assemble** — MoviePy + FFmpeg build the 1080x1920 30fps reel: cover card,
-   still images timed to the narration, kinetic pill captions, watermark.
-6. **Validate** — eight quality gates (duration, resolution, caption coverage,
-   silence check, …) written to `working/debug/quality_report.txt`.
-7. **Distribute** — a run summary lands on the workflow run page.
+1. **Ingest** — picks the first `"pending"` story from `stories.json`. Multi-part
+   stories (`"parts": 2` or `3`) produce one video per part. The story is marked
+   `"done"` only after every part is produced.
+2. **Enrich** — DeepSeek R1 via OpenRouter writes the multi-part script as JSON
+   (third person, past tense), strictly validated with wide safety-net tolerances.
+3. **Assets** — for each shot, Pollinations generates a **background** and a
+   **character sprite** separately, composited with Pillow. Every call is anchored
+   to your `assets/style_reference.png`.
+4. **Voice** — Chatterbox TTS via the Hugging Face Space (`ResembleAI/Chatterbox`)
+   narrates each part; `whisper-timestamped` extracts word-level caption timing.
+5. **Assemble** — MoviePy + FFmpeg build each part's 1080×1920 30fps reel: static
+   cover card, still images cut to the narration, kinetic pill captions, watermark.
+6. **Validate** — eight quality gates per part → `working/debug/quality_report.txt`.
+7. **Distribute** — a per-part run summary lands on the workflow run page.
 
 ## Setup
 
-1. Create the repository secrets below (**Settings → Secrets and variables →
-   Actions**).
-2. That's it — the workflow in `.github/workflows/daily_reel.yml` runs daily at
-   07:00 UTC.
+### 1. Add your style reference
 
-### Secrets
+Place `style_reference.png` in the `assets/` folder and commit it to `main`. See
+[`assets/README.md`](assets/README.md). It is sent to Pollinations on every image
+call so all visuals stay on-style. The raw URL is built automatically from the
+`GITHUB_REPOSITORY` variable — nothing to configure.
+
+### 2. Create the secrets
+
+**Settings → Secrets and variables → Actions**:
 
 | Secret | Required | Description |
 |---|---|---|
-| `OPENROUTER_API_KEY` | Yes | OpenRouter API key for DeepSeek access |
+| `OPENROUTER_API_KEY` | Yes | OpenRouter API key (paid tier recommended) |
+| `HUGGINGFACE_TOKEN` | Yes | Hugging Face token for the Chatterbox TTS Space |
 | `CHANNEL_HANDLE` | Yes | Instagram handle, e.g. `@grimmtales` — rendered as the watermark |
-| `MUSIC_BED_PATH` | No | Path to an optional background music file in the repo (mixed at -18dB) |
-| `CHATTERBOX_VOICE_REFERENCE` | No | Path to a voice reference audio file in the repo for voice cloning |
+| `VOICE_REFERENCE_PATH` | No | Path (in the repo) to a voice reference WAV for cloning |
+| `MUSIC_BED_PATH` | No | Path (in the repo) to an optional background music file (mixed at −18dB) |
 
 Missing optional secrets are fine — the run warns and continues.
+
+The workflow then runs daily at 07:00 UTC.
 
 ## Adding stories to the queue
 
@@ -55,48 +63,44 @@ Append entries to `stories.json`:
   "author": "Brothers Grimm",
   "moral": "Kindness is rewarded in unexpected ways",
   "estimated_length": "medium",
+  "parts": 2,
   "status": "pending"
 }
 ```
 
-`estimated_length` is one of `short` (Aesop fables, ~18-20 shots), `medium`
-(~24-26 shots), or `long` (~28-30 shots). Stories are consumed top to bottom —
-the first `"pending"` entry wins. When the queue runs dry the pipeline logs a
-warning and exits without producing a video.
+- `estimated_length`: `short`, `medium`, or `long`
+- `parts`: `1` (Aesop fables), `2` (most Grimm/HCA), or `3` (the longest stories)
+
+Stories are consumed top to bottom — the first `"pending"` entry wins.
 
 ## Triggering a manual run
 
-**Actions → Daily Fairy Tale Reel → Run workflow**. The `workflow_dispatch`
-trigger runs the exact same pipeline as the daily schedule.
+**Actions → Daily Fairy Tale Reel → Run workflow**. Same pipeline as the schedule.
 
-## Downloading the video
+## Downloading the videos
 
-Open the workflow run, scroll to **Artifacts**, and download:
+Open the workflow run → **Artifacts**:
 
-- `reel-<run id>` — the finished `reel.mp4` (kept 7 days)
-- `debug-<run id>` — full debug trail: raw LLM responses, quality report,
-  image fetch log, run log (kept 3 days)
+- `reels-<run id>` — every part's `part_N_reel.mp4` (kept 7 days). Post them in order.
+- `debug-<run id>` — raw LLM responses, quality report, image fetch log, run log (3 days)
 
-Check the run summary on the same page for the quality gate results before
-posting.
+Check the run summary on the same page before posting.
 
 ## Troubleshooting
 
 | Symptom | Where to look | Likely cause |
 |---|---|---|
-| Run fails at Enrich | `debug` artifact → `raw_response.txt` | Malformed LLM JSON, exhausted OpenRouter credits, or a validation failure (the log names the exact failed check) |
-| White frames with shot numbers in the video | `image_fetch_log.txt` | Pollinations.ai timed out on those shots — placeholders were substituted so the run could finish |
-| No captions / caption coverage gate fails | `run_log.txt` | Whisper produced no word timestamps; the video is still produced, inspect before posting |
-| Run is very slow | — | Normal: Chatterbox TTS on CPU is the slow stage; the job allows 120 minutes. First run also downloads model weights (`torch` is large) |
-| `reel-*` artifact missing but job "succeeded" | job log | Story queue is empty — add pending stories to `stories.json` |
-| Robotic/wrong voice | — | Check `CHATTERBOX_VOICE_REFERENCE` points to a real file in the repo; otherwise the default voice is used |
-| Quality gate failures | `quality_report.txt` | Gates never block the artifact — they flag it. Inspect the video before posting |
+| Run fails at Enrich | `debug` → `raw_response.txt` | Malformed LLM JSON, exhausted OpenRouter credits, or a validation failure (the log names the exact failed check) |
+| Voice stage slow / times out | `run_log.txt` | Hugging Face Space cold start — the pipeline waits up to 600s and retries 5× with 30s gaps. A very cold Space can still exhaust retries; re-run |
+| Placeholder frames in the video | `image_fetch_log.txt` | Pollinations timed out on those shots — placeholders were substituted so the run could finish |
+| Visuals drift from your style | — | Confirm `assets/style_reference.png` is committed to `main` and the raw URL resolves |
+| No captions / coverage gate fails | `run_log.txt` | Whisper produced no word timestamps; video still produced, inspect before posting |
+| `reels-*` artifact missing but job "succeeded" | job log | Story queue is empty — add pending stories |
+| Only some parts produced | job summary | A part failed mid-way; the story stays pending and is retried next run |
 
 ### Notes
 
-- A run counts as **successful if and only if `working/output/reel.mp4` exists**.
-  Quality gate failures produce warnings, not crashes.
-- The `working/` directory is recreated from scratch on every run and is not
-  committed.
-- The stories.json commit uses `[skip ci]`, so advancing the queue never
-  triggers a loop.
+- A run is **successful if at least one part video is produced**. A story is only
+  marked done when **all** its parts are produced.
+- The `working/` directory is recreated from scratch every run and is not committed.
+- The stories.json commit uses `[skip ci]`, so advancing the queue never loops.
