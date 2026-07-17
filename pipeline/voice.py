@@ -109,13 +109,14 @@ class _TTS:
                 if self.client is None:
                     self.connect()
                 result = self.client.predict(
-                    text,
-                    audio_prompt,
-                    EXAGGERATION,
-                    TEMPERATURE,
-                    0,            # seed (0 = random inside the Space)
-                    CFG_WEIGHT,
-                    api_name="/generate",
+                    text_input=text,
+                    audio_prompt_path_input=self.reference or None,
+                    exaggeration_input=0.4,
+                    temperature_input=0.7,
+                    seed_num_input=0,
+                    cfgw_input=0.6,
+                    vad_trim_input=False,
+                    api_name="/generate_tts_audio"
                 )
                 path = result[0] if isinstance(result, (list, tuple)) else result
                 data, sr = sf.read(path, dtype="float32")
