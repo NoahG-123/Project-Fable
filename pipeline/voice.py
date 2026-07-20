@@ -1,32 +1,23 @@
-"""Stage 4 — Voice (V2).
+"""Stage 4 — Voice.
 
-Generate narration with Chatterbox TTS via the Hugging Face Space
-(ResembleAI/Chatterbox) using gradio_client — this gives far better audio
-than running Chatterbox on CPU, and keeps torch off the hot path for TTS.
+Generate narration with Chatterbox TTS, running locally on the pipeline
+runner's CPU — no external service, no GPU. Narration is generated per
+segment (the cover title_readout, then each shot in order) and the clips
+are concatenated with short pauses, giving exact per-shot audio boundaries
+for assembly. Word-level caption timestamps come from whisper-timestamped
+run locally on the result.
 
-The Space accepts up to ~300 characters per call, so narration is generated
-per segment (cover title_readout, then each shot) and any segment longer than
-300 chars is split into sentence sub-chunks. Segments are concatenated with
-short pauses, giving exact per-shot audio boundaries for assembly. Word-level
-caption timestamps come from whisper-timestamped run locally on the result.
+Heavy imports (torch, chatterbox, whisper) happen inside functions so the
+rest of the pipeline can be imported and tested without them installed.
 """
 
 import json
 import logging
 import os
-import re
-
-import numpy as np
 
 logger = logging.getLogger("grimm.voice")
 
-HF_SPACE = "ResembleAI/Chatterbox"
-HF_TIMEOUT = 600            # patient — the Space may cold-start
-HF_MAX_ATTEMPTS = 5
-HF_RETRY_GAP = 30          # seconds between retries
-MAX_CHARS = 300
-
-COVER_MIN_DURATION = 3.0
+COVER_MIN_DURATION = 3.0   # cover card must hold at least this long
 PAUSE_AFTER_COVER = 0.8
 PAUSE_BETWEEN_SHOTS = 0.3
 TAIL_PAUSE = 0.4
@@ -37,7 +28,6 @@ CFG_WEIGHT = 0.6
 TEMPERATURE = 0.7
 
 WHISPER_MODEL = "base"
-SAMPLE_RATE = 24000        # Chatterbox native output rate
 
 
 def _resolve_voice_reference():
@@ -52,97 +42,6 @@ def _resolve_voice_reference():
         return None
     logger.info("Using voice reference for cloning: %s", reference)
     return reference
-
-
-def _split_sentences(text):
-    parts = re.split(r"(?<=[.!?])\s+", text.strip())
-    return [p.strip() for p in parts if p.strip()]
-
-
-def _chunk_text(text, limit=MAX_CHARS):
-    """Greedily pack sentences into <=limit-char chunks (hard-split if needed)."""
-    chunks = []
-    current = ""
-    for sentence in _split_sentences(text):
-        if len(sentence) > limit:
-            if current:
-                chunks.append(current)
-                current = ""
-            for i in range(0, len(sentence), limit):
-                chunks.append(sentence[i:i + limit])
-            continue
-        candidate = f"{current} {sentence}".strip()
-        if len(candidate) <= limit:
-            current = candidate
-        else:
-            if current:
-                chunks.append(current)
-            current = sentence
-    if current:
-        chunks.append(current)
-    return chunks or [text[:limit]]
-
-
-class _TTS:
-    """Lazily-constructed Hugging Face Space client wrapper."""
-
-    def __init__(self, reference):
-        self.reference = reference
-        self.client = None
-
-    def connect(self):
-        from gradio_client import Client
-
-        token = os.environ.get("HUGGINGFACE_TOKEN") or None
-        self.client = Client(HF_SPACE, token=token)
-        logger.info("Connected to Hugging Face Space %s", HF_SPACE)
-
-    def synthesize(self, text):
-        """Return a float32 mono numpy array at SAMPLE_RATE, or None on failure."""
-        import soundfile as sf
-        from gradio_client import handle_file
-
-        audio_prompt = handle_file(self.reference) if self.reference else None
-        last_error = None
-        for attempt in range(1, HF_MAX_ATTEMPTS + 1):
-            try:
-                if self.client is None:
-                    self.connect()
-                result = self.client.predict(
-                    text_input=text,
-                    audio_prompt_path_input=self.reference or None,
-                    exaggeration_input=0.4,
-                    temperature_input=0.7,
-                    seed_num_input=0,
-                    cfgw_input=0.6,
-                    vad_trim_input=False,
-                    api_name="/generate_tts_audio"
-                )
-                path = result[0] if isinstance(result, (list, tuple)) else result
-                data, sr = sf.read(path, dtype="float32")
-                if data.ndim > 1:
-                    data = data.mean(axis=1)
-                if sr != SAMPLE_RATE:
-                    data = _resample(data, sr, SAMPLE_RATE)
-                return data
-            except Exception as exc:  # noqa: BLE001
-                last_error = exc
-                logger.warning("HF TTS attempt %d/%d failed: %s", attempt, HF_MAX_ATTEMPTS, exc)
-                if attempt < HF_MAX_ATTEMPTS:
-                    import time
-                    time.sleep(HF_RETRY_GAP)
-        logger.error("HF TTS failed after %d attempts: %s", HF_MAX_ATTEMPTS, last_error)
-        return None
-
-
-def _resample(data, src_sr, dst_sr):
-    if src_sr == dst_sr:
-        return data
-    duration = data.shape[0] / src_sr
-    new_len = int(round(duration * dst_sr))
-    old_x = np.linspace(0.0, duration, num=data.shape[0], endpoint=False)
-    new_x = np.linspace(0.0, duration, num=new_len, endpoint=False)
-    return np.interp(new_x, old_x, data).astype(np.float32)
 
 
 def _transcribe_words(audio_path):
@@ -184,12 +83,22 @@ def generate_part_narration(part, part_index, working_dir="working"):
     timestamps_path = os.path.join(audio_dir, f"part_{part_index}_timestamps.json")
 
     try:
-        import soundfile as sf
+        import torch
+        import torchaudio
+        from chatterbox.tts import ChatterboxTTS
     except Exception as exc:  # noqa: BLE001
-        logger.error("soundfile not importable: %s", exc)
+        logger.error("Could not import Chatterbox TTS stack: %s", exc)
         return None
 
-    tts = _TTS(_resolve_voice_reference())
+    try:
+        logger.info("Loading Chatterbox TTS model (CPU)…")
+        model = ChatterboxTTS.from_pretrained(device="cpu")
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Could not load Chatterbox TTS model: %s", exc)
+        return None
+
+    sample_rate = model.sr
+    reference = _resolve_voice_reference()
 
     texts = [("cover", None, part["cover"]["title_readout"])]
     for index, shot in enumerate(part["shots"]):
@@ -200,15 +109,22 @@ def generate_part_narration(part, part_index, working_dir="working"):
     cursor = 0.0
 
     for position, (kind, shot_index, text) in enumerate(texts):
-        sub_audio = []
-        for chunk in _chunk_text(text):
-            audio = tts.synthesize(chunk)
-            if audio is None:
-                logger.error("TTS failed on %s chunk — aborting part %d", kind, part_index)
-                return None
-            sub_audio.append(audio)
-        wav = np.concatenate(sub_audio) if len(sub_audio) > 1 else sub_audio[0]
-        duration = len(wav) / SAMPLE_RATE
+        try:
+            kwargs = {
+                "exaggeration": EXAGGERATION,
+                "cfg_weight": CFG_WEIGHT,
+                "temperature": TEMPERATURE,
+            }
+            if reference:
+                kwargs["audio_prompt_path"] = reference
+            wav = model.generate(text, **kwargs)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("Chatterbox failed on %s (%r…): %s", kind, text[:60], exc)
+            return None
+
+        if wav.dim() == 1:
+            wav = wav.unsqueeze(0)
+        duration = wav.shape[-1] / sample_rate
 
         if kind == "cover":
             pause = max(PAUSE_AFTER_COVER, COVER_MIN_DURATION - duration)
@@ -217,8 +133,8 @@ def generate_part_narration(part, part_index, working_dir="working"):
         else:
             pause = PAUSE_BETWEEN_SHOTS
 
-        pieces.append(wav)
-        pieces.append(np.zeros(int(round(pause * SAMPLE_RATE)), dtype=np.float32))
+        silence = torch.zeros(1, int(round(pause * sample_rate)))
+        pieces.extend([wav, silence])
         segments.append({
             "kind": kind,
             "shot_index": shot_index,
@@ -233,8 +149,8 @@ def generate_part_narration(part, part_index, working_dir="working"):
         )
 
     try:
-        full = np.concatenate(pieces)
-        sf.write(audio_path, full, SAMPLE_RATE)
+        full = torch.cat(pieces, dim=1)
+        torchaudio.save(audio_path, full, sample_rate)
     except Exception as exc:  # noqa: BLE001
         logger.error("Could not save narration wav: %s", exc)
         return None

@@ -21,8 +21,8 @@ Seven stages, orchestrated by `pipeline/main.py`:
 3. **Assets** — for each shot, Pollinations generates a **background** and a
    **character sprite** separately, composited with Pillow. Every call is anchored
    to your `assets/style_reference.png`.
-4. **Voice** — Chatterbox TTS via the Hugging Face Space (`ResembleAI/Chatterbox`)
-   narrates each part; `whisper-timestamped` extracts word-level caption timing.
+4. **Voice** — Chatterbox TTS runs locally on the runner's CPU to narrate each
+   part; `whisper-timestamped` extracts word-level caption timing.
 5. **Assemble** — MoviePy + FFmpeg build each part's 1080×1920 30fps reel: static
    cover card, still images cut to the narration, kinetic pill captions, watermark.
 6. **Validate** — eight quality gates per part → `working/debug/quality_report.txt`.
@@ -44,7 +44,6 @@ call so all visuals stay on-style. The raw URL is built automatically from the
 | Secret | Required | Description |
 |---|---|---|
 | `OPENROUTER_API_KEY` | Yes | OpenRouter API key (paid tier recommended) |
-| `HUGGINGFACE_TOKEN` | Yes | Hugging Face token for the Chatterbox TTS Space |
 | `CHANNEL_HANDLE` | Yes | Instagram handle, e.g. `@grimmtales` — rendered as the watermark |
 | `VOICE_REFERENCE_PATH` | No | Path (in the repo) to a voice reference WAV for cloning |
 | `MUSIC_BED_PATH` | No | Path (in the repo) to an optional background music file (mixed at −18dB) |
@@ -91,7 +90,7 @@ Check the run summary on the same page before posting.
 | Symptom | Where to look | Likely cause |
 |---|---|---|
 | Run fails at Enrich | `debug` → `raw_response.txt` | Malformed LLM JSON, exhausted OpenRouter credits, or a validation failure (the log names the exact failed check) |
-| Voice stage slow / times out | `run_log.txt` | Hugging Face Space cold start — the pipeline waits up to 600s and retries 5× with 30s gaps. A very cold Space can still exhaust retries; re-run |
+| Voice stage slow | `run_log.txt` | Chatterbox TTS runs on the runner's CPU — model load + per-shot generation is inherently slow with no GPU; this is expected, not an error |
 | Placeholder frames in the video | `image_fetch_log.txt` | Pollinations timed out on those shots — placeholders were substituted so the run could finish |
 | Visuals drift from your style | — | Confirm `assets/style_reference.png` is committed to `main` and the raw URL resolves |
 | No captions / coverage gate fails | `run_log.txt` | Whisper produced no word timestamps; video still produced, inspect before posting |

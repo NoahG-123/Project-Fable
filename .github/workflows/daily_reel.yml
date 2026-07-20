@@ -42,7 +42,6 @@ jobs:
       - name: Run pipeline
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
           CHANNEL_HANDLE: ${{ secrets.CHANNEL_HANDLE }}
           VOICE_REFERENCE_PATH: ${{ secrets.VOICE_REFERENCE_PATH }}
           MUSIC_BED_PATH: ${{ secrets.MUSIC_BED_PATH }}
