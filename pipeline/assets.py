@@ -18,7 +18,9 @@ import logging
 import os
 import time
 import urllib.parse
+from collections import deque
 
+import numpy as np
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -33,8 +35,10 @@ BG_PREFIX = (
     "hand-drawn aesthetic, clean line work, no characters, no people, no animals"
 )
 CHAR_PREFIX = (
-    "stickman character, transparent background, {desc}, expressive hand-drawn face, "
-    "bold black outlines, minimal shading, muted earthy tones, full body visible, isolated figure"
+    "full-body character sprite, {desc}, standing alone on a solid flat white background, "
+    "plain white studio backdrop, no scenery, no shadows, no props, no ground or floor, "
+    "hand-drawn storybook illustration, bold black outlines, expressive face, clean line work, "
+    "muted earthy color palette on the character only, centered figure, product-photography framing"
 )
 
 SLEEP_BETWEEN_REQUESTS = 3
@@ -42,11 +46,16 @@ MAX_RETRIES = 3
 RETRY_BACKOFF = 6
 REQUEST_TIMEOUT = 180
 
+# Locked forever — the same seed anchors every image call across every run,
+# so identical (or near-identical, via the rare-token trick — see enrich.py)
+# prompts keep rendering the same way instead of drifting run to run.
+LOCKED_SEED = 424242
+
 BG_WIDTH, BG_HEIGHT = 1080, 1920
 CHAR_WIDTH, CHAR_HEIGHT = 540, 960
 
-WHITE_THRESHOLD = 240        # pixels brighter than this become transparent
-CHARACTER_HEIGHT_RATIO = 0.60  # character ~60% of frame height
+BACKGROUND_KEY_THRESHOLD = 225  # pixels this light (0-255/channel) count as backdrop
+CHARACTER_HEIGHT_RATIO = 0.60   # character ~60% of frame height
 
 
 def style_reference_url():
@@ -149,18 +158,47 @@ def _placeholder(label):
     return image
 
 
-def _key_out_white(character_image):
-    """Replace near-white pixels with transparency. Returns RGBA."""
+def _key_out_background(character_image, threshold=BACKGROUND_KEY_THRESHOLD):
+    """Make the backdrop transparent via a border flood-fill. Returns RGBA.
+
+    Pollinations/Flux has no real alpha output — "transparent background" in
+    the prompt just biases it toward a plain light backdrop, which is never
+    perfectly pure white. A global per-pixel threshold either leaves the
+    whole canvas opaque (backdrop slightly off-white) or eats pale details
+    inside the character (white highlights, pale clothing). Flood-filling
+    only from the border keeps both: any light pixel connected to the edge
+    is backdrop and goes transparent; light pixels enclosed by the character
+    stay opaque.
+    """
     rgba = character_image.convert("RGBA")
-    pixels = rgba.getdata()
-    out = []
-    for r, g, b, a in pixels:
-        if r >= WHITE_THRESHOLD and g >= WHITE_THRESHOLD and b >= WHITE_THRESHOLD:
-            out.append((r, g, b, 0))
-        else:
-            out.append((r, g, b, a))
-    rgba.putdata(out)
-    return rgba
+    arr = np.array(rgba)
+    height, width = arr.shape[:2]
+    is_light = np.all(arr[:, :, :3] >= threshold, axis=2)
+
+    visited = np.zeros((height, width), dtype=bool)
+    queue = deque()
+
+    def seed(y, x):
+        if is_light[y, x] and not visited[y, x]:
+            visited[y, x] = True
+            queue.append((y, x))
+
+    for x in range(width):
+        seed(0, x)
+        seed(height - 1, x)
+    for y in range(height):
+        seed(y, 0)
+        seed(y, width - 1)
+
+    while queue:
+        y, x = queue.popleft()
+        for ny, nx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+            if 0 <= ny < height and 0 <= nx < width and is_light[ny, nx] and not visited[ny, nx]:
+                visited[ny, nx] = True
+                queue.append((ny, nx))
+
+    arr[:, :, 3] = np.where(visited, 0, arr[:, :, 3])
+    return Image.fromarray(arr, mode="RGBA")
 
 
 def _composite(background_rgb, character_rgba):
@@ -230,7 +268,7 @@ def generate_part_images(part, part_index, seed, style_ref, working_dir="working
                 raise RuntimeError("background missing")
             background = _aspect_fill(bg_img, BG_WIDTH, BG_HEIGHT)
             if char_img is not None:
-                composed = _composite(background, _key_out_white(char_img))
+                composed = _composite(background, _key_out_background(char_img))
             else:
                 composed = background
             composed.save(shot_path, "PNG")

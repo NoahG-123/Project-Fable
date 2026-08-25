@@ -15,7 +15,6 @@ Partial success uploads what exists but leaves the story pending for retry.
 
 import logging
 import os
-import random
 import shutil
 import sys
 import traceback
@@ -77,9 +76,9 @@ def run():
 
     parts = script.get("scripts", [])
     expected_parts = story.get("parts", 1)
-    run_seed = random.randint(0, 2**31 - 1)
+    run_seed = assets.LOCKED_SEED
     style_ref = assets.style_reference_url()
-    logger.info("Run seed %d | style reference: %s", run_seed, style_ref or "<none>")
+    logger.info("Run seed %d (locked) | style reference: %s", run_seed, style_ref or "<none>")
 
     part_results = []
 

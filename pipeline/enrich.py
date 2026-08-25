@@ -128,6 +128,31 @@ Rules:
 
 ---
 
+CHARACTER CONSISTENCY — RARE TOKEN NAMES:
+
+The image generator has no memory between shots — each visual_prompt is
+rendered independently. To keep a recurring character looking like the same
+character from shot to shot, invent one short, unique, made-up token-name for
+each character who appears in more than one shot (protagonist, antagonist,
+any named animal or figure). These tokens are nonsense words, not the
+character's real story name — e.g. "Vethrik", "Ossalume", "Quenmarr" — chosen
+so the image generator treats them as a distinct, unambiguous anchor.
+
+Rules:
+- Invent one token per recurring character. One-off background figures who
+  appear in a single shot do not need a token.
+- Every time that character appears in a visual_prompt's character segment,
+  open the description with their exact token name, spelled identically every
+  time, e.g.: "character: Vethrik, a young peasant girl in a patched brown
+  tunic, standing with hands on hips, determined expression"
+- Keep that character's physical description (build, hair, clothing, colour
+  palette) worded consistently across every shot they appear in — do not
+  introduce new physical details partway through the story.
+- Token names are a visual anchor only — never use them in narration or
+  title_readout. The viewer never sees or hears them.
+
+---
+
 WORD COUNT — these are targets, not hard limits:
 - short: aim for 150 to 200 words total narration
 - medium: aim for 200 to 280 words per part
