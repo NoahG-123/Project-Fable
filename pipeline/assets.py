@@ -42,6 +42,11 @@ MAX_RETRIES = 3
 RETRY_BACKOFF = 6
 REQUEST_TIMEOUT = 180
 
+# Locked forever — the same seed anchors every image call across every run,
+# so identical (or near-identical, via the rare-token trick — see enrich.py)
+# prompts keep rendering the same way instead of drifting run to run.
+LOCKED_SEED = 424242
+
 BG_WIDTH, BG_HEIGHT = 1080, 1920
 CHAR_WIDTH, CHAR_HEIGHT = 540, 960
 
