@@ -11,7 +11,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # 120min was sized before any run actually finished (every earlier run
+    # errored out early on image/voice failures). The first real run — no
+    # errors, everything working — took ~180min for a 3-part "long" story
+    # (~40-45s per Pollinations image call x ~53 images/part x 3 parts,
+    # plus CPU-bound Chatterbox TTS) and got killed 2min from done. 240
+    # leaves a real margin.
+    timeout-minutes: 240
 
     steps:
       - name: Checkout
